@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presenter.MainActivity">
+
+    <TextView
+
+        android:id="@+id/dataTextView"
+        android:layout_marginTop="20dp"
+        android:text="no data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+
+        android:id="@+id/receiveButton"
+        android:text="receive data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+
+    <EditText
+
+        android:id="@+id/dataEditText"
+        android:hint="put data here"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+
+        android:id="@+id/sendButton"
+        android:text="send data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+
+
+</LinearLayout>

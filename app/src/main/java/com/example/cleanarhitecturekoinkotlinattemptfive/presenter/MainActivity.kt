@@ -7,17 +7,20 @@ import android.widget.EditText
 import android.widget.TextView
 import com.example.cleanarhitecturekoinkotlinattemptfive.R
 import com.example.cleanarhitecturekoinkotlinattemptfive.data.repository.UserRepositoryImpl
+import com.example.cleanarhitecturekoinkotlinattemptfive.data.storage.UserStorage
+import com.example.cleanarhitecturekoinkotlinattemptfive.data.storage.sharedprefs.SharedPrefUserStorage
 import com.example.cleanarhitecturekoinkotlinattemptfive.domain.models.SaveUserNameParam
 import com.example.cleanarhitecturekoinkotlinattemptfive.domain.models.UserName
 import com.example.cleanarhitecturekoinkotlinattemptfive.domain.usecase.GetUserNameUseCase
 import com.example.cleanarhitecturekoinkotlinattemptfive.domain.usecase.SaveUserNameUseCase
 
-class MainActivity : Activity() {
+class MainActivity (): Activity() {
 
 
-    private val userRepository by lazy (LazyThreadSafetyMode.NONE) { UserRepositoryImpl(context = applicationContext)}
 
-    private val getUserNameUseCase by lazy { GetUserNameUseCase (userRepository = userRepository) }
+    private val userRepository by lazy (LazyThreadSafetyMode.NONE) { UserRepositoryImpl(userStorage = SharedPrefUserStorage(context = applicationContext))}
+
+    private val getUserNameUseCase by lazy{ GetUserNameUseCase (userRepository = userRepository) }
     private val saveUserNameUseCase by lazy { SaveUserNameUseCase (userRepository = userRepository) }
 
     override fun onCreate(savedInstanceState: Bundle?) {

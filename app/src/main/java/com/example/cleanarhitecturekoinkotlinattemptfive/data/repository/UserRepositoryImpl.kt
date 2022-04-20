@@ -1,33 +1,42 @@
 package com.example.cleanarhitecturekoinkotlinattemptfive.data.repository
 
-import android.content.Context
+
+import com.example.cleanarhitecturekoinkotlinattemptfive.data.storage.models.User
+import com.example.cleanarhitecturekoinkotlinattemptfive.data.storage.UserStorage
 import com.example.cleanarhitecturekoinkotlinattemptfive.domain.models.SaveUserNameParam
 import com.example.cleanarhitecturekoinkotlinattemptfive.domain.models.UserName
 import com.example.cleanarhitecturekoinkotlinattemptfive.domain.repository.UserRepository
 
 
-private const val SHARED_PREFS_NAME = "SHARED_PREFS_NAME"
-private const val KEY_FIRST_NAME = "FIRSTNAME"
-private const val KEY_LAST_NAME = "LASTNAME"
 
 
-class UserRepositoryImpl (context: Context): UserRepository {
 
-    private val sharedPreferences = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+class UserRepositoryImpl (private val userStorage: UserStorage): UserRepository {
+
 
     override fun saveName(saveParam: SaveUserNameParam): Boolean {
-        sharedPreferences.edit().putString(KEY_FIRST_NAME, saveParam.name).apply()
-        return true
+
+        val user = mapToStorage(saveParam)
+        val result = userStorage.save(user)
+        return result
     }
+
 
     override fun getName(): UserName {
 
-        val firstName = sharedPreferences.getString(KEY_FIRST_NAME, "") ?: "something by default"
-        val lastName = sharedPreferences.getString(KEY_LAST_NAME, "nothing to show") ?: "something by default"
+        val user = userStorage.get()
 
-        return UserName(firstName = firstName, lastName = lastName)
+        return mapToDomain(user)
 
     }
 
+
+    private fun mapToDomain (user: User): UserName {
+        return  UserName (firstName = user.firstName, lastName = user.lastName)
+    }
+
+    private fun mapToStorage (saveParam: SaveUserNameParam): User {
+        return User(firstName = saveParam.name, lastName = "by default from repositoryimpl")
+    }
 
 }

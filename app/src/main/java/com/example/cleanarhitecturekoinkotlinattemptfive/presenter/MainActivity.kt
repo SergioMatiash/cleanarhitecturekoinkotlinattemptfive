@@ -7,24 +7,30 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.cleanarhitecturekoinkotlinattemptfive.R
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.example.cleanarhitecturekoinkotlinattemptfive.app.App
+import javax.inject.Inject
+
 
 class MainActivity: AppCompatActivity() {
 
+    @Inject
+    lateinit var vmFactory: MainViewModelFactory
 
+    private lateinit var vm: MainVIewModel
 
-
-    private val vm by viewModel<MainVIewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        (applicationContext as App).appComponent.inject(this)
+
         Log.e("AAA", "onCreate: Activity created" )
 
+       vm = ViewModelProvider(this, vmFactory).get(MainVIewModel::class.java)
 
         val dataTextView = findViewById<TextView>(R.id.dataTextView)
         val dataEditView = findViewById<EditText>(R.id.dataEditText)
@@ -32,21 +38,18 @@ class MainActivity: AppCompatActivity() {
         val receiveButton = findViewById<Button>(R.id.receiveButton)
 
 
-        vm.resultLive.observe(this, Observer {
-            dataTextView.text = it
+        vm.resultLive.observe(this, {text ->
+            dataTextView.text = text
         })
 
         sendButton.setOnClickListener {
-
             val text = dataEditView.text.toString()
             vm.save(text)
-
         }
-
 
         receiveButton.setOnClickListener {
-
             vm.load()
         }
+
     }
 }

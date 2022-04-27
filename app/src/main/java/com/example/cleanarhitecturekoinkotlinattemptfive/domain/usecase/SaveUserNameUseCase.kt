@@ -3,8 +3,9 @@ package com.example.cleanarhitecturekoinkotlinattemptfive.domain.usecase
 
 import com.example.cleanarhitecturekoinkotlinattemptfive.domain.models.SaveUserNameParam
 import com.example.cleanarhitecturekoinkotlinattemptfive.domain.repository.UserRepository
+import javax.inject.Inject
 
-class SaveUserNameUseCase (private val userRepository: UserRepository) {
+class SaveUserNameUseCase @Inject constructor(private val userRepository: UserRepository) {
 
     fun execute (param: SaveUserNameParam) : Boolean{
 
